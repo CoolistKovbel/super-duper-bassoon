@@ -1,13 +1,20 @@
 import { ethers } from "ethers";
-import tokenContractAbi from "./tokenAbi.json"
+import tokenContractAbi from "./tokenAbi.json";
 
 // Token Contract - mainnet
 export const contractTokenContract =
-  "0x595e33984b0F0a8C91D6aF51451792A8Ac3092fD";
+  "0x97b36243Eff508d296676321b0aF5A58b79fE528";
+
+export const NeuronClumpTokenContract =
+  "0x97b36243Eff508d296676321b0aF5A58b79fE528";
 
 // NFT Contract /testnet
 export const ContractNFTCollection =
-  "0x595e33984b0f0a8c91d6af51451792a8ac3092fd";
+  "0xe68C0fdcD264BE35BfBEb5067a7062Fc912e747f";
+
+export const EkudoParkCollection = "0x933a0aA2A3188B79f839094e5E9b560c8BbA4152";
+
+
 
 export const getEthereumObject = () => {
   return typeof window !== "undefined" ? window.ethereum : null;
@@ -44,25 +51,25 @@ export const mintNFT = async (_amount: any) => {
   try {
     console.log("minting nft", _amount);
 
-    const amountInWei = ethers.utils.parseEther((0.042 * _amount).toString());
+    // const amountInWei = ethers.utils.parseEther((0.042 * _amount).toString());
 
-    console.log("amountInWei", amountInWei);
+    // console.log("amountInWei", amountInWei);
 
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    // Get the signer
-    const signer = provider.getSigner();
+    // const provider = new ethers.providers.Web3Provider(window.ethereum);
+    // // Get the signer
+    // const signer = provider.getSigner();
 
-    // Contract main
-    const contractInstance = new ethers.Contract(
-      ContractNFTCollection,
-      tokenContractAbi,
-      signer
-    );
+    // // Contract main
+    // const contractInstance = new ethers.Contract(
+    //   ContractNFTCollection,
+    //   tokenContractAbi,
+    //   signer
+    // );
 
-    await contractInstance.mint(_amount, {
-      value: amountInWei,
-      gasLimit: 300000,
-    });
+    // await contractInstance.mint(_amount, {
+    //   value: amountInWei,
+    //   gasLimit: 300000,
+    // });
   } catch (error) {
     console.log(error);
   }
