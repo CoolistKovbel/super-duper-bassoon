@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
 import tokenContractAbi from "./tokenAbi.json";
+import NFTContractAbi from "./nftAbi.json";
 
 // Token Contract - mainnet
 export const contractTokenContract =
@@ -10,7 +11,7 @@ export const NeuronClumpTokenContract =
 
 // NFT Contract /testnet
 export const ContractNFTCollection =
-  "0xe68C0fdcD264BE35BfBEb5067a7062Fc912e747f";
+  "0x8a5d1733Ee162915A85253604192465c97b43eBb";
 
 export const EkudoParkCollection = "0x933a0aA2A3188B79f839094e5E9b560c8BbA4152";
 
@@ -47,31 +48,65 @@ export const getEthereumAccount = async () => {
   }
 };
 
-export const mintNFT = async (_amount: any) => {
+
+export const readPriceFromContract = async () => {
   try {
-    console.log("minting nft", _amount);
+    // Initialize provider
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
 
-    // const amountInWei = ethers.utils.parseEther((0.042 * _amount).toString());
+    // Get the signer
+    const signer = provider.getSigner();
 
-    // console.log("amountInWei", amountInWei);
+    // Connect to the contract
+    const contractInstance = new ethers.Contract(
+      ContractNFTCollection,
+      NFTContractAbi,
+      signer
+    );
 
-    // const provider = new ethers.providers.Web3Provider(window.ethereum);
-    // // Get the signer
-    // const signer = provider.getSigner();
+    // Call the readPrice function
+    const price = await contractInstance.readPrice();
+    
+    // Convert the price from wei to ether
+    const priceInEther = ethers.utils.formatEther(price);
 
-    // // Contract main
-    // const contractInstance = new ethers.Contract(
-    //   ContractNFTCollection,
-    //   tokenContractAbi,
-    //   signer
-    // );
-
-    // await contractInstance.mint(_amount, {
-    //   value: amountInWei,
-    //   gasLimit: 300000,
-    // });
+    console.log("Price in Ether:", priceInEther);
+    
+    return priceInEther;
   } catch (error) {
-    console.log(error);
+    console.error("Error reading price:", error);
+  }
+};
+
+// Example function to mint an NFT
+export const mintNFT = async (_amount:1) => {
+  try {
+    console.log("Minting NFT", _amount);
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+
+    const contractInstance = new ethers.Contract(
+      ContractNFTCollection,
+      NFTContractAbi,
+      signer
+    );
+
+    // Read the current price from the contract
+    const priceInWei = await contractInstance.readPrice();
+    const totalCost = priceInWei.mul(_amount);
+
+    console.log("Total cost in Wei:", totalCost.toString());
+
+    // Mint the NFT(s)
+    const tx = await contractInstance.mint(_amount, {
+      value: totalCost,
+      gasLimit: 600000,
+    });
+
+    console.log("Transaction:", tx);
+  } catch (error) {
+    console.error("Error minting NFT:", error);
   }
 };
 
@@ -97,6 +132,9 @@ export const swapToken = async (_amount: any) => {
       value: amountInWei,
       gasLimit: 600000,
     });
+
+
+    
   } catch (error) {
     console.log(error);
   }

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import React, { useEffect } from "react";
-import { mintNFT } from "../lib/web3";
+import { mintNFT, readPriceFromContract } from "../lib/web3";
 
 const MintComponent = () => {
 
@@ -20,7 +20,11 @@ const MintComponent = () => {
   }
 
   useEffect(() => {
+    const gg = async () => {
+      await readPriceFromContract()
+    }
 
+    gg()
   })
 
 
