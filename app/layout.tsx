@@ -6,7 +6,7 @@ import MainHeader from "./components/main-header";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Ektoro Park",
+  title: "Ekudo Park",
   description: "Join and help build a warming community, cleaning up parks and making it fun again",
 };
 

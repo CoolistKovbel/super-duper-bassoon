@@ -4,7 +4,7 @@ import React from "react";
 const MainHeader = () => {
   return (
     <header className="w-full p-5 flex items-center justify-between  bg-[#333]">
-      <h2 className="text-2xl font-bold"><Link href="/">Ektoro park</Link></h2>
+      <h2 className="text-2xl font-bold"><Link href="/">Ekudo park</Link></h2>
 
       <nav className="bg-[#111] flex items-center gap-4 p-2">
         <a
