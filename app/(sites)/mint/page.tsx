@@ -99,10 +99,10 @@ const Page = () => {
         ))}
       </div>
 
-      <div className="flex items-center flex-col w-full h-[200px] p-10 text-xl gap-4">
+      <div className="flex items-center flex-col w-full h-[200px] p-10 text-xl gap-4 bg-[#444] mt-4 h-full">
         <h2 className="text-4xl font-bold mb-2">Token Info</h2>
-        <p className="w-full flex items-center justify-between flex-col">
-          <span className="font-bold underline w-full">Contract Address:</span> 0x234
+        <p className="w-full flex items-center justify-between flex-col text-[10px]">
+          <span className="font-bold underline w-full text-xl">Contract Address:</span> 0x1C352E8F3e035c524F2385818b44859906d3c705
         </p>
         <p className="w-full flex items-center justify-between flex-col">
           <span className="font-bold underline w-full">Token Supply:</span> 123

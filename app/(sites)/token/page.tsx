@@ -3,7 +3,8 @@ import React from "react";
 
 const Page = () => {
   return (
-    <section className="w-full min-h-screen bg-[#111] p-10">
+    <section className="w-full min-h-screen bg-[#111] p-10 ">
+
       <header className="w-full bg-[#222] flex items-center justify-between flex-col p-10">
         <h2 className="text-4xl mb-2 font-bold">Tokens</h2>
         <p className="text-sm">
@@ -40,6 +41,7 @@ const Page = () => {
       </div>
 
       <TokenMint />
+
     </section>
   );
 };
