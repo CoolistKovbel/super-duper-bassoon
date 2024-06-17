@@ -11,11 +11,10 @@ export const NeuronClumpTokenContract =
 
 // NFT Contract /testnet
 export const ContractNFTCollection =
-  "0x8a5d1733Ee162915A85253604192465c97b43eBb";
+  "0xE5A004AE56444feF359C55957030A7724EF0de2E";
 
+// official
 export const EkudoParkCollection = "0x933a0aA2A3188B79f839094e5E9b560c8BbA4152";
-
-
 
 export const getEthereumObject = () => {
   return typeof window !== "undefined" ? window.ethereum : null;
@@ -48,9 +47,18 @@ export const getEthereumAccount = async () => {
   }
 };
 
+export const isClientSide = () => {
+  return (
+    typeof window !== "undefined" && typeof window.ethereum !== "undefined"
+  );
+};
 
 export const readPriceFromContract = async () => {
   try {
+    if (!isClientSide()) {
+      throw new Error("This function can only be called on the client side");
+    }
+
     // Initialize provider
     const provider = new ethers.providers.Web3Provider(window.ethereum);
 
@@ -66,20 +74,45 @@ export const readPriceFromContract = async () => {
 
     // Call the readPrice function
     const price = await contractInstance.readPrice();
-    
+
     // Convert the price from wei to ether
     const priceInEther = ethers.utils.formatEther(price);
 
     console.log("Price in Ether:", priceInEther);
-    
+
     return priceInEther;
   } catch (error) {
     console.error("Error reading price:", error);
+    throw error;
+  }
+};
+
+export const getTokenSupply = async () => {
+  try {
+    if (!isClientSide()) {
+      throw new Error("This function can only be called on the client side");
+    }
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+
+    const contractInstance = new ethers.Contract(
+      ContractNFTCollection,
+      NFTContractAbi,
+      signer
+    );
+
+    const supply = await contractInstance.giveMeTotalSupply();
+
+    return supply;
+  } catch (error) {
+    console.error("Error fetching token supply:", error);
+    throw error;
   }
 };
 
 // Example function to mint an NFT
-export const mintNFT = async (_amount:1) => {
+export const mintNFT = async (_amount: any) => {
   try {
     console.log("Minting NFT", _amount);
 
@@ -99,10 +132,15 @@ export const mintNFT = async (_amount:1) => {
     console.log("Total cost in Wei:", totalCost.toString());
 
     // Mint the NFT(s)
+
+    console.log(await contractInstance);
+
     const tx = await contractInstance.mint(_amount, {
       value: totalCost,
       gasLimit: 600000,
     });
+
+    await tx.wait();
 
     console.log("Transaction:", tx);
   } catch (error) {
@@ -132,9 +170,6 @@ export const swapToken = async (_amount: any) => {
       value: amountInWei,
       gasLimit: 600000,
     });
-
-
-    
   } catch (error) {
     console.log(error);
   }

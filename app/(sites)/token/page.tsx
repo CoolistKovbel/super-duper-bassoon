@@ -40,7 +40,7 @@ const Page = () => {
         </p>
       </div>
 
-      <TokenMint />
+      {/* <TokenMint /> */}
 
     </section>
   );
